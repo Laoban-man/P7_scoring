@@ -19,3 +19,6 @@ app.config.suppress_callback_exceptions = True
 
 # set applicaiton title
 app.title = "MLB Data Explorer"
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
