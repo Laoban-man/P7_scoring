@@ -13,6 +13,10 @@ def index():
     except:
         print("Failed to load model")
 
+    try:
+        model_predict()
+    except:
+        return {"message": "Failed moving to model_predict"}
     return {
         "message": "Running",
     }
@@ -59,7 +63,7 @@ def model_predict():
         print("Error saving new data :" + str(e))
 
     return {
-        "message": "Running",
+        "message": "Predict",
     }
 
 
