@@ -1,1 +1,1 @@
-web: gunicorn dash-app:__hug_wsgi__
+web: gunicorn dash-app
