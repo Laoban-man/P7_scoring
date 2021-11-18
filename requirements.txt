@@ -1,6 +1,6 @@
 app==0.0.1
 dash==2.0.0
-dash_bootstrap_components==2.0.0
+dash_bootstrap_components==1.0.0
 dash_core_components==2.0.0
 dash_html_components==2.0.0
 dash_table==4.11.3
