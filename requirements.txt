@@ -7,7 +7,7 @@ dash_table==4.11.3
 hug==2.6.1
 numpy==1.19.5
 pandas==1.2.3
-plotly==4.14.3
+plotly==5.0.0
 PyJWT==2.3.0
 scikit_learn==1.0.1
 gunicorn==19.10.0
