@@ -3,7 +3,7 @@ dash==2.0.0
 dash_bootstrap_components==1.0.0
 dash_core_components==2.0.0
 dash_html_components==2.0.0
-dash_table==4.11.3
+dash_table==5.0.0
 hug==2.6.1
 numpy==1.19.5
 pandas==1.2.3
