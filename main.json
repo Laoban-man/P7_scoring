@@ -1,0 +1,7 @@
+{
+  "name": "Hug api for p7_scoring project",
+  "description": "A barebones Python app based on Hug api deployed on Heroku",
+  "image": "heroku/python",
+  "repository": "https://github.com/Laoban-man/P7_scoring",
+  "keywords": ["python"],
+}

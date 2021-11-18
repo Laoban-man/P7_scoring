@@ -3,7 +3,7 @@ from model import Model
 import pickle
 
 
-@hug.cli()
+@hug.local()
 @hug.get("/index")
 def index():
     """Load the model"""
@@ -18,6 +18,8 @@ def index():
     }
 
 
+@hug.local()
+@hug.cli()
 @hug.post("/upload")
 def upload_file(body):
     """accepts file uploads
@@ -36,7 +38,7 @@ def upload_file(body):
     return {"message": "Saving data succeeded"}
 
 
-@hug.cli()
+@hug.local()
 @hug.get("/predict")
 def model_predict():
     """Load the model"""
