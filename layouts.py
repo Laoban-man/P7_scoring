@@ -90,32 +90,31 @@ appMenu = html.Div(
     className="menu",
 )
 
-
-# Menu slider used, NOT independent, MUST be used with main menu
-menuSlider = html.Div(
-    [
-        dbc.Row(
-            dbc.Col(
-                dcc.RangeSlider(
-                    id="era-slider",
-                    min=1903,
-                    max=teams_df["year"].max(),
-                    marks=era_marks,
-                    tooltip={"always_visible": False, "placement": "bottom"},
-                )
-            )
-        ),
-        dbc.Row(
-            dbc.Col(
-                html.P(
-                    style={"font-size": "16px", "opacity": "70%"},
-                    children="Adjust slider to desired range.",
-                )
-            )
-        ),
-    ],
-    className="era-slider",
-)
+# # Menu slider used, NOT independent, MUST be used with main menu
+# menuSlider = html.Div(
+#     [
+#         dbc.Row(
+#             dbc.Col(
+#                 dcc.RangeSlider(
+#                     id="era-slider",
+#                     min=1903,
+#                     max=teams_df["year"].max(),
+#                     marks=era_marks,
+#                     tooltip={"always_visible": False, "placement": "bottom"},
+#                 )
+#             )
+#         ),
+#         dbc.Row(
+#             dbc.Col(
+#                 html.P(
+#                     style={"font-size": "16px", "opacity": "70%"},
+#                     children="Adjust slider to desired range.",
+#                 )
+#             )
+#         ),
+#     ],
+#     className="era-slider",
+# )
 
 
 # Layout for Team Analysis page
@@ -193,81 +192,81 @@ applicationLayout = html.Div(
 )
 
 
-# Player menu used to select players after era and team are set
-explorationMenu = html.Div(
-    [
-        dbc.Row(dbc.Col(html.H3(children="Player Profile and Statistics"))),
-        dbc.Row(
-            dbc.Col(
-                html.P(
-                    style={"font-size": "16px", "opacity": "70%"},
-                    children="Available players are updated based on team selection.",
-                )
-            )
-        ),
-        dbc.Row(
-            [
-                dbc.Row(
-                    dbc.Col(
-                        html.H4(
-                            style={"text-align": "center"}, children="Select Player:"
-                        ),
-                        xs={"size": "auto", "offset": 0},
-                        sm={"size": "auto", "offset": 0},
-                        md={"size": "auto", "offset": 0},
-                        lg={"size": "auto", "offset": 0},
-                        xl={"size": "auto", "offset": 0},
-                    )
-                ),
-                dbc.Row(
-                    dbc.Col(
-                        dcc.Dropdown(
-                            style={
-                                "margin-left": "2%",
-                                "text-align": "center",
-                                "font-size": "18px",
-                                "width": "218px",
-                            },
-                            id="player-dropdown",
-                            clearable=False,
-                        ),
-                        xs={"size": "auto", "offset": 0},
-                        sm={"size": "auto", "offset": 0},
-                        md={"size": "auto", "offset": 0},
-                        lg={"size": "auto", "offset": 0},
-                        xl={"size": "auto", "offset": 0},
-                    )
-                ),
-            ],
-            no_gutters=True,
-        ),
-        html.Br(),
-        dbc.Row(
-            dbc.Col(
-                dash_table.DataTable(
-                    id="playerProfile",
-                    style_as_list_view=True,
-                    editable=False,
-                    style_table={
-                        "overflowY": "scroll",
-                        "width": "100%",
-                        "minWidth": "100%",
-                    },
-                    style_header={"backgroundColor": "#f8f5f0", "fontWeight": "bold"},
-                    style_cell={"textAlign": "center", "padding": "8px"},
-                ),
-                xs={"size": "auto", "offset": 0},
-                sm={"size": "auto", "offset": 0},
-                md={"size": 8, "offset": 0},
-                lg={"size": "auto", "offset": 0},
-                xl={"size": "auto", "offset": 0},
-            ),
-            justify="center",
-        ),
-        html.Br(),
-    ],
-    className="app-page",
-)
+# # Player menu used to select players after era and team are set
+# explorationMenu = html.Div(
+#     [
+#         dbc.Row(dbc.Col(html.H3(children="Player Profile and Statistics"))),
+#         dbc.Row(
+#             dbc.Col(
+#                 html.P(
+#                     style={"font-size": "16px", "opacity": "70%"},
+#                     children="Available players are updated based on team selection.",
+#                 )
+#             )
+#         ),
+#         dbc.Row(
+#             [
+#                 dbc.Row(
+#                     dbc.Col(
+#                         html.H4(
+#                             style={"text-align": "center"}, children="Select Player:"
+#                         ),
+#                         xs={"size": "auto", "offset": 0},
+#                         sm={"size": "auto", "offset": 0},
+#                         md={"size": "auto", "offset": 0},
+#                         lg={"size": "auto", "offset": 0},
+#                         xl={"size": "auto", "offset": 0},
+#                     )
+#                 ),
+#                 dbc.Row(
+#                     dbc.Col(
+#                         dcc.Dropdown(
+#                             style={
+#                                 "margin-left": "2%",
+#                                 "text-align": "center",
+#                                 "font-size": "18px",
+#                                 "width": "218px",
+#                             },
+#                             id="player-dropdown",
+#                             clearable=False,
+#                         ),
+#                         xs={"size": "auto", "offset": 0},
+#                         sm={"size": "auto", "offset": 0},
+#                         md={"size": "auto", "offset": 0},
+#                         lg={"size": "auto", "offset": 0},
+#                         xl={"size": "auto", "offset": 0},
+#                     )
+#                 ),
+#             ],
+#             no_gutters=True,
+#         ),
+#         html.Br(),
+#         dbc.Row(
+#             dbc.Col(
+#                 dash_table.DataTable(
+#                     id="playerProfile",
+#                     style_as_list_view=True,
+#                     editable=False,
+#                     style_table={
+#                         "overflowY": "scroll",
+#                         "width": "100%",
+#                         "minWidth": "100%",
+#                     },
+#                     style_header={"backgroundColor": "#f8f5f0", "fontWeight": "bold"},
+#                     style_cell={"textAlign": "center", "padding": "8px"},
+#                 ),
+#                 xs={"size": "auto", "offset": 0},
+#                 sm={"size": "auto", "offset": 0},
+#                 md={"size": 8, "offset": 0},
+#                 lg={"size": "auto", "offset": 0},
+#                 xl={"size": "auto", "offset": 0},
+#             ),
+#             justify="center",
+#         ),
+#         html.Br(),
+#     ],
+#     className="app-page",
+# )
 
 
 # Batting statistics

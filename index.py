@@ -12,8 +12,8 @@ import dash_bootstrap_components as dbc
 from navbar import Navbar
 from layouts import (
     appMenu,
-    menuSlider,
-    explorationMenu,
+    # menuSlider,
+    # explorationMenu,
     applicationLayout,
     explorationLayout,
     predictLayout,

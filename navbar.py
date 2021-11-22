@@ -13,7 +13,7 @@ def Navbar():
             dbc.NavItem(
                 dbc.NavLink("Data exploration", href=f"{app_name}/exploration")
             ),
-            dbc.NavItem(dbc.NavLink("Creding scoring", href=f"{app_name}/predict")),
+            dbc.NavItem(dbc.NavLink("Credit scoring", href=f"{app_name}/predict")),
         ],
         brand="Home",
         brand_href=f"{app_name}",
