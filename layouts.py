@@ -16,13 +16,13 @@ era_list = data.era_list
 era_marks = data.era_marks
 
 
-# Main applicaiton menu
+# Main application menu
 appMenu = html.Div(
     [
         dbc.Row(
             [
                 dbc.Col(
-                    html.H4(style={"text-align": "center"}, children="Select Era:"),
+                    html.H4(style={"text-align": "center"}, children="xxx"),
                     xs={"size": "auto", "offset": 0},
                     sm={"size": "auto", "offset": 0},
                     md={"size": "auto", "offset": 3},
@@ -50,7 +50,7 @@ appMenu = html.Div(
                 dbc.Col(
                     html.H4(
                         style={"text-align": "center", "justify-self": "right"},
-                        children="Select Team:",
+                        children="xxx",
                     ),
                     xs={"size": "auto", "offset": 0},
                     sm={"size": "auto", "offset": 0},
@@ -81,8 +81,7 @@ appMenu = html.Div(
             dbc.Col(
                 html.P(
                     style={"font-size": "16px", "opacity": "70%"},
-                    children="""For continuity, some teams historical names where changed to match """
-                    """their modern counterpart. Available teams are updated based on Era selection.""",
+                    children="""xxx """ """xxx.""",
                 )
             )
         ),
@@ -120,7 +119,7 @@ appMenu = html.Div(
 # Layout for Team Analysis page
 applicationLayout = html.Div(
     [
-        dbc.Row(dbc.Col(html.H3(children="Team Accolades"))),
+        dbc.Row(dbc.Col(html.H3(children="Application data"))),
         # Display Championship titles in datatable
         dbc.Row(
             dbc.Col(
@@ -134,7 +133,7 @@ applicationLayout = html.Div(
             justify="center",
         ),
         ### Graphs of Historical Team statistics ###
-        dbc.Row(dbc.Col(html.H3(children="Team Analysis"))),
+        dbc.Row(dbc.Col(html.H3(children="Application data"))),
         # Bar Chart of Wins and Losses
         dbc.Row(
             dbc.Col(
@@ -144,48 +143,6 @@ applicationLayout = html.Div(
                 md={"size": 12, "offset": 0},
                 lg={"size": 12, "offset": 0},
             )
-        ),
-        # Line Chart of Batting Average, BABIP, and Strikeout Rate
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id="batting-line", config={"displayModeBar": False}),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
-            )
-        ),
-        # Bar Char of Errors and Double Plays
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id="feild-line", config={"displayModeBar": False}),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
-            )
-        ),
-        dbc.Row(dbc.Col(html.H4(children="Pitching Performance"))),
-        dbc.Row(
-            [
-                # Line graph of K/BB ratio with ERA bubbles
-                dbc.Col(
-                    dcc.Graph(id="pitch-bubble", config={"displayModeBar": False}),
-                    xs={"size": 12, "offset": 0},
-                    sm={"size": 12, "offset": 0},
-                    md={"size": 12, "offset": 0},
-                    lg={"size": 6, "offset": 0},
-                ),
-                # Pie Chart, % of Completed Games, Shutouts, and Saves of Total Games played
-                dbc.Col(
-                    dcc.Graph(id="pitch-pie", config={"displayModeBar": False}),
-                    xs={"size": 12, "offset": 0},
-                    sm={"size": 12, "offset": 0},
-                    md={"size": 12, "offset": 0},
-                    lg={"size": 6, "offset": 0},
-                ),
-            ],
-            no_gutters=True,
         ),
     ],
     className="app-page",

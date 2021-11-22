@@ -1,14 +1,8 @@
-# import dash-core, dash-html, dash io, bootstrap
 import os
-
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
-# Dash Bootstrap components
 import dash_bootstrap_components as dbc
-
-# Navbar, layouts, custom callbacks
 from navbar import Navbar
 from layouts import (
     appMenu,
@@ -19,11 +13,7 @@ from layouts import (
     predictLayout,
 )
 import callbacks
-
-# Import app
 from app import app
-
-# Import server for deployment
 from app import srv as server
 
 
@@ -50,7 +40,7 @@ container = dbc.Container([header, content])
 
 
 # Menu callback, set and return
-# Declair function  that connects other pages with content to container
+# Declare function  that connects other pages with content to container
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
     if pathname in [app_name, app_name + "/"]:
@@ -78,9 +68,9 @@ def display_page(pathname):
     elif pathname.endswith("/application"):
         return appMenu, applicationLayout
     elif pathname.endswith("/exploration"):
-        return appMenu, explorationLayout
+        return explorationLayout
     elif pathname.endswith("/predict"):
-        return appMenu, predictLayout
+        return predictLayout
     else:
         return "ERROR 404: Page not found!"
 
