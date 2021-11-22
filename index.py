@@ -66,7 +66,7 @@ def display_page(pathname):
             className="home",
         )
     elif pathname.endswith("/application"):
-        return appMenu, applicationLayout
+        return upload_file, applicationLayout
     elif pathname.endswith("/exploration"):
         return explorationLayout
     elif pathname.endswith("/predict"):
