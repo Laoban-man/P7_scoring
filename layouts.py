@@ -307,7 +307,7 @@ explorationLayout = html.Div(
 # Feilding Statistics
 predictLayout = html.Div(
     [
-        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="Feilding"))),
+        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="A"))),
         # Feilding Datatable
         dbc.Row(
             dbc.Col(
@@ -332,7 +332,7 @@ predictLayout = html.Div(
             justify="center",
         ),
         html.Br(),
-        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="Pitching"))),
+        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="B"))),
         dbc.Row(
             dbc.Col(
                 html.Div(id="pitch-data"),
@@ -345,66 +345,8 @@ predictLayout = html.Div(
             justify="center",
         ),
         html.Br(),
-        dbc.Row(dbc.Col(html.H3(children="Player Analysis"))),
-        # Player dropdown menu
-        dbc.Row(
-            [
-                dbc.Row(
-                    dbc.Col(
-                        html.H4(
-                            style={"text-align": "center"}, children="Select Position:"
-                        ),
-                        xs={"size": "auto", "offset": 0},
-                        sm={"size": "auto", "offset": 0},
-                        md={"size": "auto", "offset": 0},
-                        lg={"size": "auto", "offset": 0},
-                        xl={"size": "auto", "offset": 0},
-                    )
-                ),
-                dbc.Row(
-                    dbc.Col(
-                        dcc.Dropdown(
-                            style={
-                                "margin-left": "5px",
-                                "text-align": "center",
-                                "font-size": "18px",
-                                "width": "100px",
-                            },
-                            id="pos-dropdown",
-                            clearable=False,
-                        ),
-                        xs={"size": "auto", "offset": 0},
-                        sm={"size": "auto", "offset": 0},
-                        md={"size": "auto", "offset": 0},
-                        lg={"size": "auto", "offset": 0},
-                        xl={"size": "auto", "offset": 0},
-                    )
-                ),
-            ],
-            no_gutters=True,
-        ),
+        dbc.Row(dbc.Col(html.H3(children="Player C"))),
         dbc.Row(dbc.Col(html.H4(children="Pitching Performance"))),
-        # Pitching and Fielding graphs, Pitching graphs are set in a subplot dcc.Graph(id='field-graphs', config={'displayModeBar': False})
-        dbc.Row(
-            dbc.Col(
-                html.Div(id="pitch-graphs"),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
-                xl={"size": 12, "offset": 0},
-            )
-        ),
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id="field-graph", config={"displayModeBar": False}),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
-                xl={"size": 12, "offset": 0},
-            )
-        ),
     ],
     className="app-page",
 )
