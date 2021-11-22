@@ -76,11 +76,11 @@ def display_page(pathname):
             className="home",
         )
     elif pathname.endswith("/application"):
-        return appMenu, menuSlider, applicationLayout
+        return appMenu, applicationLayout
     elif pathname.endswith("/exploration"):
-        return appMenu, menuSlider, explorationMenu, explorationLayout
+        return appMenu, explorationLayout
     elif pathname.endswith("/predict"):
-        return appMenu, menuSlider, explorationMenu, predictLayout
+        return appMenu, predictLayout
     else:
         return "ERROR 404: Page not found!"
 
