@@ -119,7 +119,7 @@ menuSlider = html.Div(
 
 
 # Layout for Team Analysis page
-teamLayout = html.Div(
+applicationLayout = html.Div(
     [
         dbc.Row(dbc.Col(html.H3(children="Team Accolades"))),
         # Display Championship titles in datatable
@@ -194,7 +194,7 @@ teamLayout = html.Div(
 
 
 # Player menu used to select players after era and team are set
-playerMenu = html.Div(
+explorationMenu = html.Div(
     [
         dbc.Row(dbc.Col(html.H3(children="Player Profile and Statistics"))),
         dbc.Row(
@@ -271,7 +271,7 @@ playerMenu = html.Div(
 
 
 # Batting statistics
-battingLayout = html.Div(
+explorationLayout = html.Div(
     [
         # Batting datatable
         dbc.Row(
@@ -349,7 +349,7 @@ battingLayout = html.Div(
 
 
 # Feilding Statistics
-fieldingLayout = html.Div(
+predictLayout = html.Div(
     [
         dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="Feilding"))),
         # Feilding Datatable

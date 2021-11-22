@@ -3,17 +3,17 @@ import os
 import dash_bootstrap_components as dbc
 
 
-app_name = os.getenv("DASH_APP_PATH", "/dash-baseball-statistics")
+app_name = os.getenv("DASH_APP_PATH", "/credit-scoring-tool")
 
 # Navigation Bar fucntion
 def Navbar():
     navbar = dbc.NavbarSimple(
         children=[
-            dbc.NavItem(dbc.NavLink("Team Analysis", href=f"{app_name}/team")),
-            dbc.NavItem(dbc.NavLink("Batting Analysis", href=f"{app_name}/player")),
+            dbc.NavItem(dbc.NavLink("Data upload", href=f"{app_name}/application")),
             dbc.NavItem(
-                dbc.NavLink("Pitching/Fielding Analysis", href=f"{app_name}/field")
+                dbc.NavLink("Data exploration", href=f"{app_name}/exploration")
             ),
+            dbc.NavItem(dbc.NavLink("Creding scoring", href=f"{app_name}/predict")),
         ],
         brand="Home",
         brand_href=f"{app_name}",
