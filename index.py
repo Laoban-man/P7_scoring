@@ -13,10 +13,10 @@ from navbar import Navbar
 from layouts import (
     appMenu,
     menuSlider,
-    playerMenu,
-    teamLayout,
-    battingLayout,
-    fieldingLayout,
+    explorationMenu,
+    applicationLayout,
+    explorationLayout,
+    predictLayout,
 )
 import callbacks
 
@@ -76,11 +76,11 @@ def display_page(pathname):
             className="home",
         )
     elif pathname.endswith("/application"):
-        return appMenu, menuSlider, teamLayout
+        return appMenu, menuSlider, applicationLayout
     elif pathname.endswith("/exploration"):
-        return appMenu, menuSlider, playerMenu, battingLayout
+        return appMenu, menuSlider, explorationMenu, explorationLayout
     elif pathname.endswith("/predict"):
-        return appMenu, menuSlider, playerMenu, fieldingLayout
+        return appMenu, menuSlider, explorationMenu, predictLayout
     else:
         return "ERROR 404: Page not found!"
 
