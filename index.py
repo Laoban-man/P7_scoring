@@ -12,7 +12,6 @@ from layouts import (
     applicationLayout,
     explorationLayout,
     predictLayout,
-    upload_file,
 )
 import callbacks
 from app import app
