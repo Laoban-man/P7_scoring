@@ -68,7 +68,7 @@ def display_page(pathname):
             className="home",
         )
     elif pathname.endswith("/application"):
-        return upload_file, listLayout, applicationLayout
+        return listLayout, applicationLayout
     elif pathname.endswith("/exploration"):
         return explorationLayout
     elif pathname.endswith("/predict"):
@@ -86,15 +86,15 @@ def index():
 def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
     data = content.encode("utf8").split(b";base64,")[1]
-    with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
+    with open(os.path.join("uploaded_data", name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
 
 def uploaded_files():
     """List the files in the upload directory."""
     files = []
-    for filename in os.listdir(UPLOAD_DIRECTORY):
-        path = os.path.join(UPLOAD_DIRECTORY, filename)
+    for filename in os.listdir("uploaded_data"):
+        path = os.path.join("uploaded_data", filename)
         if os.path.isfile(path):
             files.append(filename)
     return files

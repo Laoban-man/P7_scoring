@@ -180,15 +180,15 @@ applicationLayout = html.Div(
             justify="center",
         ),
         # Bar Chart of Wins and Losses
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id="wl-bar", config={"displayModeBar": False}),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
-            )
-        ),
+        # dbc.Row(
+        #    dbc.Col(
+        #        dcc.Graph(id="wl-bar", config={"displayModeBar": False}),
+        #        xs={"size": 12, "offset": 0},
+        #        sm={"size": 12, "offset": 0},
+        #        md={"size": 12, "offset": 0},
+        #        lg={"size": 12, "offset": 0},
+        #    )
+        # ),
     ],
     className="app-page",
 )
