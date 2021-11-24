@@ -86,15 +86,15 @@ def index():
 def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
     data = content.encode("utf8").split(b";base64,")[1]
-    with open(os.path.join("uploaded_data", name), "wb") as fp:
+    with open(os.path.join("/uploaded_data", name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
 
 def uploaded_files():
     """List the files in the upload directory."""
     files = []
-    for filename in os.listdir("uploaded_data"):
-        path = os.path.join("uploaded_data", filename)
+    for filename in os.listdir("/uploaded_data"):
+        path = os.path.join("/uploaded_data", filename)
         if os.path.isfile(path):
             files.append(filename)
     return files
