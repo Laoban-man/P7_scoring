@@ -18,6 +18,7 @@ import callbacks
 from app import app
 from app import srv as server
 
+UPLOAD_DIRECTORY = "./uploaded_data"
 
 app_name = os.getenv("DASH_APP_PATH", "/credit-scoring-tool")
 
@@ -86,15 +87,15 @@ def index():
 def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
     data = content.encode("utf8").split(b";base64,")[1]
-    with open(os.path.join("/uploaded_data", name), "wb") as fp:
+    with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
 
 def uploaded_files():
     """List the files in the upload directory."""
     files = []
-    for filename in os.listdir("/uploaded_data"):
-        path = os.path.join("/uploaded_data", filename)
+    for filename in os.listdir(UPLOAD_DIRECTORY):
+        path = os.path.join(UPLOAD_DIRECTORY, filename)
         if os.path.isfile(path):
             files.append(filename)
     return files
