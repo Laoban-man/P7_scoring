@@ -17,7 +17,7 @@ import callbacks
 from app import app
 from app import srv as server
 
-UPLOAD_DIRECTORY = "./uploaded_data"
+UPLOAD_DIRECTORY = "/uploaded_data"
 
 app_name = os.getenv("DASH_APP_PATH", "/credit-scoring-tool")
 
