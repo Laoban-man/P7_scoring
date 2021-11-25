@@ -41,6 +41,12 @@ content = html.Div([dcc.Location(id="url"), html.Div(id="page-content")])
 container = dbc.Container([header, content])
 
 
+@server.route("/download/<path:path>")
+def download(path):
+    """Serve a file from the upload directory."""
+    return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
+
+
 # Menu callback, set and return
 # Declare function  that connects other pages with content to container
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
