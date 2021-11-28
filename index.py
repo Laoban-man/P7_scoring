@@ -1,7 +1,8 @@
 import os
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Output, Input, State
+from dash import callback_context
 import dash_bootstrap_components as dbc
 from navbar import Navbar
 from layouts import (
@@ -12,12 +13,17 @@ from layouts import (
     applicationLayout,
     explorationLayout,
     predictLayout,
+    sendLayout,
 )
 import callbacks
 from app import app
 from app import srv as server
 import base64
 import urlquote
+import requests
+import pandas as pd
+from flask import Flask, send_from_directory
+import json
 
 UPLOAD_DIRECTORY = "./uploaded_data"
 
@@ -76,7 +82,7 @@ def display_page(pathname):
             className="home",
         )
     elif pathname.endswith("/application"):
-        return listLayout, applicationLayout
+        return listLayout, sendLayout
     elif pathname.endswith("/exploration"):
         return explorationLayout
     elif pathname.endswith("/predict"):
@@ -94,6 +100,8 @@ def index():
 def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
     data = content.encode("utf8").split(b";base64,")[1]
+    # input_data = {"data": list(pd.read_csv("candidate.csv"))}
+    # requests.get("http://localhost:8000/post_data", params=input_data)
     with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
@@ -129,7 +137,33 @@ def update_output(uploaded_filenames, uploaded_file_contents):
     if len(files) == 0:
         return [html.Li("No files yet!")]
     else:
-        return [html.Li(file_download_link(filename)) for filename in files]
+        return [filename for filename in files]
+
+
+@app.callback(
+    Output("container-button-timestamp", "children"),
+    Input("btn-nclicks-1", "n_clicks"),
+)
+def send_file(btn1):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "btn-nclicks-1" in changed_id:
+        try:
+            input_data = pd.read_csv("./uploaded_data/candidate.csv")
+            input_data = {
+                "columns": ",".join([a for a in input_data.columns]),
+                "values": ",".join([str(a) for a in input_data.iloc[0, :]]),
+            }
+            input_data = json.dumps(input_data)
+            response = requests.get(
+                "http://localhost:8000/post_data", params=input_data
+            )
+            with open("log.txt", "wb") as f:
+                f.write(response.content)
+                f.close()
+        except:
+            with open("log.txt", "wb") as f:
+                f.write("failed")
+                f.close()
 
 
 # Set layout to index function
