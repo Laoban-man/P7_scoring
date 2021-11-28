@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import pickle
-
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
@@ -31,13 +30,13 @@ class Model:
     def predict(self, new_data=None):
         if type(new_data) != np.array:
             try:
-                result = self.model.predict(self.X_test)
+                self.result = self.model.predict(self.X_test)
             except:
                 print("No data was likely in the defined instance")
             return
         else:
-            result = self.model.predict(new_data)
-        return result
+            self.result = self.model.predict(new_data)
+        return self.result
 
     def save_model(self, model_file="saved_model.pkl"):
         pickle.dump(self.model, open(model_file, "wb"))

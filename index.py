@@ -16,8 +16,10 @@ from layouts import (
 import callbacks
 from app import app
 from app import srv as server
+import base64
+import urlquote
 
-UPLOAD_DIRECTORY = "/uploaded_data"
+UPLOAD_DIRECTORY = "./uploaded_data"
 
 app_name = os.getenv("DASH_APP_PATH", "/credit-scoring-tool")
 
@@ -108,7 +110,7 @@ def uploaded_files():
 
 def file_download_link(filename):
     """Create a Plotly Dash 'A' element that downloads a file from the app."""
-    location = "/download/{}".format(urlquote(filename))
+    location = "/download/{}".format(urlquote.quote(filename))
     return html.A(filename, href=location)
 
 

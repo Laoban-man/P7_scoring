@@ -1,71 +1,45 @@
 import hug
+import pandas as pd
+import numpy as np
+import model
 from model import Model
+from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
 import pickle
 
+X, y = load_iris(return_X_y=True, as_frame=True)
 
+
+@hug.get()
 @hug.local()
-@hug.get("/index")
-def index():
-    """Load the model"""
-    try:
-        model = Model()
-        model.import_model()
-    except:
-        print("Failed to load model")
-
-    try:
-        model_predict()
-    except:
-        return {"message": "Failed moving to model_predict"}
-    return {
-        "message": "Running",
-    }
+def default_endpoint():
+    """Default endpoint"""
+    return {"message": "You've achieved the default endpoint"}
 
 
+@hug.get("/prediction")
 @hug.local()
-@hug.cli()
-@hug.post("/upload")
-def upload_file(body):
-    """accepts file uploads
-    import requests
-    with open('/home/hysterio/code/open-classrooms/P7_scoring/test.txt', 'rb') as wgetrc_handle:
-        response = requests.post('http://localhost:8000/upload', files={'.wgetrc': wgetrc_handle})
-    """
-    #  is a simple dictionary of {filename: b'content'}
-    try:
-        print("body: ", body)
-        pickle.dump(body, open("new_data.pkl", "wb"))
-        model_predict()
-    except Exception as e:
-        print("Error saving new data :" + str(e))
-
-    return {"message": "Saving data succeeded"}
+def candidate(data: hug.types.delimited_list(","), hug_timer=3):
+    """Export candidate application data and return scoring"""
+    global model
+    model = Model(X, y, "linear", [])
+    model.split(0.5)
+    model.fit()
+    model.predict()
+    return {"data": model.result[0]}
 
 
+@hug.get("/get_data", output=hug.output_format.image("png"))
 @hug.local()
-@hug.get("/predict")
-def model_predict():
-    """Load the model"""
-    try:
-        model = Model()
-        model.import_model()
-    except:
-        print("Failed to load model")
-    try:
-        new_data = pickle.load(open("new_data.pkl", "rb"))
-        print(new_data)
-    except Exception as e:
-        print("Error reading new data :" + str(e))
-
-    try:
-        model.predict()
-    except Exception as e:
-        print("Error saving new data :" + str(e))
-
-    return {
-        "message": "Predict",
-    }
-
-
-if __name__ == "__main__":
-    index.interface.cli()
+def graph_data(variable: hug.types.text, hug_timer=3):
+    """Export graph candidate application data"""
+    n, bins, patches = plt.hist(
+        X[variable], 50, density=True, facecolor="g", alpha=0.75
+    )
+    plt.axvline(X[variable].mean(), color="k", linestyle="dashed", linewidth=1)
+    plt.xlabel(variable)
+    plt.ylabel("Value")
+    plt.title("Histogram of " + variable)
+    plt.grid(True)
+    plt.savefig("./images/" + variable + ".png")
+    return "./images/" + variable + ".png"
