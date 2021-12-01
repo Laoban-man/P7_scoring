@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Output, Input, State
 from dash import callback_context
+import dash_reusable_components as drc
 import dash_bootstrap_components as dbc
 from navbar import Navbar
 from layouts import (
@@ -14,6 +15,8 @@ from layouts import (
     explorationLayout,
     predictLayout,
     sendLayout,
+    variableLayout,
+    plotLayout,
 )
 import callbacks
 from app import app
@@ -24,6 +27,10 @@ import requests
 import pandas as pd
 from flask import Flask, send_from_directory
 import json
+import plotly.express as px
+import matplotlib.pyplot as plt
+from PIL import Image
+import time
 
 UPLOAD_DIRECTORY = "./uploaded_data"
 
@@ -84,7 +91,7 @@ def display_page(pathname):
     elif pathname.endswith("/application"):
         return listLayout, sendLayout
     elif pathname.endswith("/exploration"):
-        return explorationLayout
+        return explorationLayout, variableLayout, plotLayout
     elif pathname.endswith("/predict"):
         return predictLayout
     else:
@@ -162,8 +169,56 @@ def send_file(btn1):
                 f.close()
         except:
             with open("log.txt", "wb") as f:
-                f.write("failed")
+                f.write("failed to send file\n")
                 f.close()
+
+
+@app.callback(
+    Output("dd-output-container", "children"), Input("demo-dropdown", "value")
+)
+def update_output(value):
+    try:
+        input_data = {
+            "variable": value,
+        }
+        # input_data = json.dumps(input_data)
+        response = requests.get("http://localhost:8000/get_data", params=input_data)
+        file = open("./downloaded_images/" + value + ".png", "wb")
+        file.write(response.content)
+        file.close()
+        with open("log.txt", "wb") as f:
+            f.write(response.content)
+            f.close()
+        # update_graph(str("./downloaded_images/" + value + ".png"))
+    except:
+        with open("log.txt", "wb") as f:
+            f.write(b"failed to get variable\n")
+            f.close()
+
+    return
+
+
+@app.callback(Output("interactive-image", "figure"), Input("demo-dropdown", "value"))
+def update_graph(value):
+    time.sleep(1)
+    im_pil = Image.open("./downloaded_images/" + value + ".png")
+    fig = px.imshow(im_pil)
+    return fig
+
+
+# @app.callback(
+#      Output("container-button-variable", "children"),
+#      Input("btn-nclicks-2", "n_clicks"),
+# )
+# def plot_variable(btn1):
+#     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+#     if "btn-nclicks-2" in changed_id:
+#          try:
+#              xx
+#          except:
+#              with open("log.txt", "wb") as f:
+#                  f.write("failed")
+#                  f.close()
 
 
 # Set layout to index function

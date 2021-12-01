@@ -88,6 +88,30 @@ appMenu = html.Div(
     ],
     className="menu",
 )
+variableLayout = html.Div(
+    [
+        dcc.Dropdown(
+            id="demo-dropdown",
+            options=[
+                {"label": "sepal length (cm)", "value": "sepal length (cm)"},
+                {"label": "sepal width (cm)", "value": "sepal width (cm)"},
+                {"label": "petal length (cm)", "value": "petal length (cm)"},
+                {"label": "petal width (cm)", "value": "petal width (cm)"},
+            ],
+            value="sepal length (cm)",
+        ),
+        html.Div(id="dd-output-container"),
+        # html.Button("Plot", id="btn-nclicks-2", n_clicks=0),
+        # html.Div(id="container-button-variable"),
+    ]
+)
+
+plotLayout = html.Div(
+    [
+        html.H3("\nVariable distribution"),
+        dcc.Graph(id="interactive-image", style={"width": "90vh", "height": "90vh"}),
+    ]
+)
 
 
 listLayout = html.Div(
@@ -170,7 +194,7 @@ explorationLayout = html.Div(
             dbc.Col(
                 html.H3(
                     style={"margin-top": "1%", "margin-bottom": "1%"},
-                    children="Player Analysis",
+                    children="Variable Analysis",
                 )
             )
         ),
@@ -178,39 +202,8 @@ explorationLayout = html.Div(
             dbc.Col(
                 html.P(
                     style={"font-size": "16px", "opacity": "70%"},
-                    children="Some statistics where not tracked until the 1950s, graphs may not always reflect certain plots.",
+                    children="Select a variable to see distribution and candidate position.",
                 )
-            )
-        ),
-        dbc.Row(
-            [
-                # Line/Bar Chart of On-Base Percentage, features; H BB HBP SF
-                dbc.Col(
-                    dcc.Graph(id="obp-line", config={"displayModeBar": False}),
-                    xs={"size": 12, "offset": 0},
-                    sm={"size": 12, "offset": 0},
-                    md={"size": 12, "offset": 0},
-                    lg={"size": 6, "offset": 0},
-                ),
-                # Line/Bar Chart of Slugging Average, features; 2B 3B HR
-                dbc.Col(
-                    dcc.Graph(id="slg-line", config={"displayModeBar": False}),
-                    xs={"size": 12, "offset": 0},
-                    sm={"size": 12, "offset": 0},
-                    md={"size": 12, "offset": 0},
-                    lg={"size": 6, "offset": 0},
-                ),
-            ],
-            no_gutters=True,
-        ),
-        # Line Chart of OPS, Features; OBP SLG
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id="ops-line", config={"displayModeBar": False}),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
-                md={"size": 12, "offset": 0},
-                lg={"size": 12, "offset": 0},
             )
         ),
     ],

@@ -43,13 +43,15 @@ def candidate(columns: hug.types.text, values: hug.types.text, hug_timer=3):
 @hug.local()
 def graph_data(variable: hug.types.text, hug_timer=3):
     """Export graph candidate application data"""
+
     n, bins, patches = plt.hist(
         X[variable], 50, density=True, facecolor="g", alpha=0.75
     )
-    plt.axvline(candidate[variable], color="k", linestyle="dashed", linewidth=1)
+    plt.axvline(candidate[variable][0], color="k", linestyle="dashed", linewidth=1)
     plt.xlabel(variable)
     plt.ylabel("Value")
     plt.title("Histogram of " + variable)
     plt.grid(True)
     plt.savefig("./images/" + variable + ".png")
+    plt.clf()
     return "./images/" + variable + ".png"
