@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.cluster import KMeans
 
 
 class Model:
@@ -27,15 +28,26 @@ class Model:
         self.fitted_model = self.model.fit(self.X_train, self.y_train)
         pickle.dump(self.model, open("saved_model.pkl", "wb"))
 
+    def fit_neighbours(self):
+        self.neighbours = KMeans()
+        self.fitted_neighbours = self.neighbours.fit(self.X_train)
+        pickle.dump(self.neighbours, open("saved_neigbours.pkl", "wb"))
+
+    def predict_cluster(self, candidate):
+        cluster = self.neighbours.predict(candidate)
+        return cluster
+
     def predict(self, new_data=None):
-        if type(new_data) != np.array:
+        if type(new_data) != type(None):
+            try:
+                self.result = self.model.predict(new_data)
+            except:
+                print("The input is a nd array 1xn")
+        else:
             try:
                 self.result = self.model.predict(self.X_test)
             except:
                 print("No data was likely in the defined instance")
-            return
-        else:
-            self.result = self.model.predict(new_data)
         return self.result
 
     def save_model(self, model_file="saved_model.pkl"):

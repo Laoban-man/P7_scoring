@@ -8,15 +8,18 @@ import dash_bootstrap_components as dbc
 from navbar import Navbar
 from layouts import (
     appMenu,
-    # menuSlider,
-    # explorationMenu,
     listLayout,
     applicationLayout,
-    explorationLayout,
+    explorationLayout1,
+    explorationLayout2,
     predictLayout,
     sendLayout,
-    variableLayout,
-    plotLayout,
+    variableLayout1,
+    plotLayout1,
+    variableLayout2,
+    plotLayout2,
+    scoringLayout,
+    predictbuttonLayout,
 )
 import callbacks
 from app import app
@@ -31,6 +34,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from PIL import Image
 import time
+import plotly.graph_objects as go
 
 UPLOAD_DIRECTORY = "./uploaded_data"
 
@@ -91,9 +95,16 @@ def display_page(pathname):
     elif pathname.endswith("/application"):
         return listLayout, sendLayout
     elif pathname.endswith("/exploration"):
-        return explorationLayout, variableLayout, plotLayout
+        return (
+            explorationLayout1,
+            variableLayout1,
+            plotLayout1,
+            explorationLayout2,
+            variableLayout2,
+            plotLayout2,
+        )
     elif pathname.endswith("/predict"):
-        return predictLayout
+        return predictLayout, predictbuttonLayout, scoringLayout
     else:
         return "ERROR 404: Page not found!"
 
@@ -160,10 +171,8 @@ def send_file(btn1):
                 "columns": ",".join([a for a in input_data.columns]),
                 "values": ",".join([str(a) for a in input_data.iloc[0, :]]),
             }
-            input_data = json.dumps(input_data)
-            response = requests.get(
-                "http://localhost:8000/post_data", params=input_data
-            )
+            # input_data = json.dumps(input_data)
+            response = requests.get("http://localhost:8000/post_data", input_data)
             with open("log.txt", "wb") as f:
                 f.write(response.content)
                 f.close()
@@ -174,16 +183,14 @@ def send_file(btn1):
 
 
 @app.callback(
-    Output("dd-output-container", "children"), Input("demo-dropdown", "value")
+    Output("dd-output-container1", "children"), Input("demo-dropdown1", "value")
 )
-def update_output(value):
+def update_output1(value):
     try:
-        input_data = {
-            "variable": value,
-        }
+        input_data = {"variable": value, "mode": 1}
         # input_data = json.dumps(input_data)
-        response = requests.get("http://localhost:8000/get_data", params=input_data)
-        file = open("./downloaded_images/" + value + ".png", "wb")
+        response = requests.get("http://localhost:8000/get_data", input_data)
+        file = open("./downloaded_images/global_" + value + ".png", "wb")
         file.write(response.content)
         file.close()
         with open("log.txt", "wb") as f:
@@ -198,27 +205,115 @@ def update_output(value):
     return
 
 
-@app.callback(Output("interactive-image", "figure"), Input("demo-dropdown", "value"))
-def update_graph(value):
+@app.callback(
+    Output("dd-output-container2", "children"), Input("demo-dropdown2", "value")
+)
+def update_output2(value):
+    try:
+        input_data = {"variable": value, "mode": 2}
+        # input_data = json.dumps(input_data)
+        response = requests.get("http://localhost:8000/get_data", input_data)
+        file = open("./downloaded_images/similar_" + value + ".png", "wb")
+        file.write(response.content)
+        file.close()
+        with open("log.txt", "wb") as f:
+            f.write(response.content)
+            f.close()
+        # update_graph(str("./downloaded_images/" + value + ".png"))
+    except:
+        with open("log.txt", "wb") as f:
+            f.write(b"failed to get variable\n")
+            f.close()
+
+    return
+
+
+@app.callback(Output("interactive-image1", "figure"), Input("demo-dropdown1", "value"))
+def update_graph1(value):
     time.sleep(1)
-    im_pil = Image.open("./downloaded_images/" + value + ".png")
+    im_pil = Image.open("./downloaded_images/global_" + value + ".png")
     fig = px.imshow(im_pil)
     return fig
 
 
-# @app.callback(
-#      Output("container-button-variable", "children"),
-#      Input("btn-nclicks-2", "n_clicks"),
-# )
-# def plot_variable(btn1):
-#     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
-#     if "btn-nclicks-2" in changed_id:
-#          try:
-#              xx
-#          except:
-#              with open("log.txt", "wb") as f:
-#                  f.write("failed")
-#                  f.close()
+@app.callback(Output("interactive-image2", "figure"), Input("demo-dropdown2", "value"))
+def update_graph2(value):
+    time.sleep(1)
+    im_pil = Image.open("./downloaded_images/similar_" + value + ".png")
+    fig = px.imshow(im_pil)
+    return fig
+
+
+@app.callback(
+    Output("potential", "figure"),
+    # Output("container-button-predict", "children"),
+    Input("btn-nclicks-3", "n_clicks"),
+)
+def predict_score(value):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "btn-nclicks-3" in changed_id:
+        print("step 1")
+        try:
+
+            response = requests.get("http://localhost:8000/prediction")
+            with open("log.txt", "wb") as f:
+                f.write(response.content)
+                f.close()
+            print("step 2")
+            print(response.content)
+        except:
+            with open("log.txt", "wb") as f:
+                f.write("failed to send file\n")
+                f.close()
+        # gauge plot 1
+        prediction = json.loads(response.content)["prediction"][0]
+        print(prediction)
+        if prediction < 2.5:
+            color = "#bf1600"
+        elif prediction >= 2.5 and prediction < 7.5:
+            color = "#db8a0f"
+        else:
+            color = "#5cbf00"
+        gauge1 = go.Figure(
+            go.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                value=prediction,
+                mode="gauge+number",
+                gauge={"axis": {"range": [None, 10]}, "bar": {"color": color}},
+            )
+        )
+        gauge1.update_layout(
+            height=300,
+            margin=dict(l=10, r=10, t=40, b=10),
+            showlegend=False,
+            template="plotly_dark",
+            plot_bgcolor="rgba(0, 0, 0, 0)",
+            paper_bgcolor="rgba(0, 0, 0, 0)",
+            font_color="black",
+            font_size=15,
+        )
+        return gauge1
+
+    else:
+        gauge1 = go.Figure(
+            go.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                value=0,
+                mode="gauge+number",
+                gauge={"axis": {"range": [None, 10]}, "bar": {"color": "#5000bf"}},
+            )
+        )
+        gauge1.update_layout(
+            height=300,
+            margin=dict(l=10, r=10, t=40, b=10),
+            showlegend=False,
+            template="plotly_dark",
+            plot_bgcolor="rgba(0, 0, 0, 0)",
+            paper_bgcolor="rgba(0, 0, 0, 0)",
+            font_color="black",
+            font_size=15,
+        )
+        return go.Figure()
 
 
 # Set layout to index function

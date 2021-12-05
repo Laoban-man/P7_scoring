@@ -8,6 +8,7 @@ import dash_bootstrap_components as dbc
 
 # Import custom data.py
 import data
+import plotly.graph_objs as go
 
 # Import data from data.py file
 teams_df = data.teams
@@ -88,10 +89,10 @@ appMenu = html.Div(
     ],
     className="menu",
 )
-variableLayout = html.Div(
+variableLayout1 = html.Div(
     [
         dcc.Dropdown(
-            id="demo-dropdown",
+            id="demo-dropdown1",
             options=[
                 {"label": "sepal length (cm)", "value": "sepal length (cm)"},
                 {"label": "sepal width (cm)", "value": "sepal width (cm)"},
@@ -100,16 +101,71 @@ variableLayout = html.Div(
             ],
             value="sepal length (cm)",
         ),
-        html.Div(id="dd-output-container"),
+        html.Div(id="dd-output-container1"),
+        # html.Button("Plot", id="btn-nclicks-2", n_clicks=0),
+        # html.Div(id="container-button-variable"),
+    ]
+)
+variableLayout2 = html.Div(
+    [
+        dcc.Dropdown(
+            id="demo-dropdown2",
+            options=[
+                {"label": "sepal length (cm)", "value": "sepal length (cm)"},
+                {"label": "sepal width (cm)", "value": "sepal width (cm)"},
+                {"label": "petal length (cm)", "value": "petal length (cm)"},
+                {"label": "petal width (cm)", "value": "petal width (cm)"},
+            ],
+            value="sepal length (cm)",
+        ),
+        html.Div(id="dd-output-container2"),
         # html.Button("Plot", id="btn-nclicks-2", n_clicks=0),
         # html.Div(id="container-button-variable"),
     ]
 )
 
-plotLayout = html.Div(
+plotLayout1 = html.Div(
     [
-        html.H3("\nVariable distribution"),
-        dcc.Graph(id="interactive-image", style={"width": "90vh", "height": "90vh"}),
+        html.H4("\nVariable distribution"),
+        dcc.Graph(
+            id="interactive-image1",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
+    ]
+)
+plotLayout2 = html.Div(
+    [
+        html.H4("\nVariable distribution"),
+        dcc.Graph(
+            id="interactive-image2",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
     ]
 )
 
@@ -147,10 +203,17 @@ sendLayout = html.Div(
 )
 
 
+predictbuttonLayout = html.Div(
+    [
+        html.Button("Evaluate", id="btn-nclicks-3", n_clicks=0),
+        html.Div(id="container-button-predict"),
+    ]
+)
+
+
 applicationLayout = html.Div(
     [
         dbc.Row(dbc.Col(html.H3(children="Application data"))),
-        # Display Championship titles in datatable
         dbc.Row(
             dbc.Col(
                 html.Div(id="team-data"),
@@ -166,12 +229,12 @@ applicationLayout = html.Div(
     className="app-page",
 )
 
-explorationLayout = html.Div(
+explorationLayout1 = html.Div(
     [
         dbc.Row(
             dbc.Col(
                 dash_table.DataTable(
-                    id="batterTable",
+                    id="batterTable1",
                     style_as_list_view=True,
                     editable=False,
                     style_table={
@@ -194,6 +257,14 @@ explorationLayout = html.Div(
             dbc.Col(
                 html.H3(
                     style={"margin-top": "1%", "margin-bottom": "1%"},
+                    children="Global Comparison",
+                )
+            )
+        ),
+        dbc.Row(
+            dbc.Col(
+                html.H4(
+                    style={"margin-top": "1%", "margin-bottom": "1%"},
                     children="Variable Analysis",
                 )
             )
@@ -202,24 +273,19 @@ explorationLayout = html.Div(
             dbc.Col(
                 html.P(
                     style={"font-size": "16px", "opacity": "70%"},
-                    children="Select a variable to see distribution and candidate position.",
+                    children="Select a variable to see its distribution across all clients and candidate position.",
                 )
             )
         ),
     ],
     className="app-page",
 )
-
-
-# Feilding Statistics
-predictLayout = html.Div(
+explorationLayout2 = html.Div(
     [
-        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="A"))),
-        # Feilding Datatable
         dbc.Row(
             dbc.Col(
                 dash_table.DataTable(
-                    id="fieldTable",
+                    id="batterTable2",
                     style_as_list_view=True,
                     editable=False,
                     style_table={
@@ -232,28 +298,55 @@ predictLayout = html.Div(
                 ),
                 xs={"size": 12, "offset": 0},
                 sm={"size": 12, "offset": 0},
-                md={"size": 8, "offset": 0},
-                lg={"size": 8, "offset": 0},
-                xl={"size": 8, "offset": 0},
-            ),
-            justify="center",
-        ),
-        html.Br(),
-        dbc.Row(dbc.Col(html.H3(style={"margin-bottom": "1%"}, children="B"))),
-        dbc.Row(
-            dbc.Col(
-                html.Div(id="pitch-data"),
-                xs={"size": 12, "offset": 0},
-                sm={"size": 12, "offset": 0},
                 md={"size": 10, "offset": 0},
                 lg={"size": 10, "offset": 0},
                 xl={"size": 10, "offset": 0},
             ),
             justify="center",
         ),
-        html.Br(),
-        dbc.Row(dbc.Col(html.H3(children="Player C"))),
-        dbc.Row(dbc.Col(html.H4(children="Pitching Performance"))),
+        dbc.Row(
+            dbc.Col(
+                html.H3(
+                    style={"margin-top": "1%", "margin-bottom": "1%"},
+                    children="Similar client comparison",
+                )
+            )
+        ),
+        dbc.Row(
+            dbc.Col(
+                html.H4(
+                    style={"margin-top": "1%", "margin-bottom": "1%"},
+                    children="Variable Analysis",
+                )
+            )
+        ),
+        dbc.Row(
+            dbc.Col(
+                html.P(
+                    style={"font-size": "16px", "opacity": "70%"},
+                    children="Select a variable to see its distribution across similar clients and the candidate's position.",
+                )
+            )
+        ),
+    ],
+    className="app-page",
+)
+scoringLayout = html.Div(
+    dcc.Graph(id="potential"),
+)
+
+
+# Feilding Statistics
+predictLayout = html.Div(
+    [
+        dbc.Row(
+            dbc.Col(
+                html.H3(
+                    style={"margin-bottom": "1%"},
+                    children="Credit score evaluation result:",
+                )
+            )
+        ),
     ],
     className="app-page",
 )

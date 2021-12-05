@@ -19,10 +19,10 @@ def default_endpoint():
 
 @hug.get("/prediction")
 @hug.local()
-def predict_candidate(data: hug.types.delimited_list(","), hug_timer=3):
+def predict_candidate(hug_timer=3):
     """Export candidate application data and return scoring"""
-    model.predict()
-    return {"data": model.result[0]}
+    prediction = model.predict(np.array(candidate).reshape(1, 4))
+    return {"prediction": prediction}
 
 
 @hug.get("/post_data")
@@ -33,6 +33,7 @@ def candidate(columns: hug.types.text, values: hug.types.text, hug_timer=3):
     model = Model(X, y, "linear", [])
     model.split(0.5)
     model.fit()
+    model.fit_neighbours()
     values = np.array([float(a) for a in values.split(",")])
     values = values.reshape(1, values.shape[0])
     candidate = pd.DataFrame(values, columns=columns.split(","))
@@ -41,17 +42,30 @@ def candidate(columns: hug.types.text, values: hug.types.text, hug_timer=3):
 
 @hug.get("/get_data", output=hug.output_format.image("png"))
 @hug.local()
-def graph_data(variable: hug.types.text, hug_timer=3):
+def graph_data(variable: hug.types.text, mode: hug.types.number, hug_timer=3):
     """Export graph candidate application data"""
-
+    if mode != 1:
+        labels = model.neighbours.labels_
+        candidate_cluster = model.predict_cluster(candidate)
+        similar = model.X_train[labels == candidate_cluster]
+        data = pd.DataFrame(similar, columns=X.columns)
+    else:
+        data = X
     n, bins, patches = plt.hist(
-        X[variable], 50, density=True, facecolor="g", alpha=0.75
+        data[variable], 50, density=False, facecolor="g", alpha=0.75
     )
     plt.axvline(candidate[variable][0], color="k", linestyle="dashed", linewidth=1)
+    # plt.axvline(
+    #    model.X_train[variable].mean(), color="k", linestyle="dashed", linewidth=1
+    # )
     plt.xlabel(variable)
     plt.ylabel("Value")
     plt.title("Histogram of " + variable)
     plt.grid(True)
+    if mode == 1:
+        variable = "global_" + variable
+    else:
+        variable = "similar_" + variable
     plt.savefig("./images/" + variable + ".png")
     plt.clf()
     return "./images/" + variable + ".png"
