@@ -202,6 +202,22 @@ def update_output1(value):
             f.write(b"failed to get variable\n")
             f.close()
 
+    try:
+        input_data = {"variable": value, "mode": 2}
+        # input_data = json.dumps(input_data)
+        response = requests.get("http://localhost:8000/get_data2", input_data)
+        file = open("./downloaded_images/box_global_" + value + ".png", "wb")
+        file.write(response.content)
+        file.close()
+        with open("log.txt", "wb") as f:
+            f.write(response.content)
+            f.close()
+        # update_graph(str("./downloaded_images/" + value + ".png"))
+    except:
+        with open("log.txt", "wb") as f:
+            f.write(b"failed to get variable\n")
+            f.close()
+
     return
 
 
@@ -225,6 +241,21 @@ def update_output2(value):
             f.write(b"failed to get variable\n")
             f.close()
 
+    try:
+        input_data = {"variable": value, "mode": 2}
+        # input_data = json.dumps(input_data)
+        response = requests.get("http://localhost:8000/get_data2", input_data)
+        file = open("./downloaded_images/box_similar_" + value + ".png", "wb")
+        file.write(response.content)
+        file.close()
+        with open("log.txt", "wb") as f:
+            f.write(response.content)
+            f.close()
+        # update_graph(str("./downloaded_images/" + value + ".png"))
+    except:
+        with open("log.txt", "wb") as f:
+            f.write(b"failed to get variable\n")
+            f.close()
     return
 
 
@@ -240,6 +271,22 @@ def update_graph1(value):
 def update_graph2(value):
     time.sleep(1)
     im_pil = Image.open("./downloaded_images/similar_" + value + ".png")
+    fig = px.imshow(im_pil)
+    return fig
+
+
+@app.callback(Output("interactive-image3", "figure"), Input("demo-dropdown2", "value"))
+def update_graph3(value):
+    time.sleep(1)
+    im_pil = Image.open("./downloaded_images/box_global_" + value + ".png")
+    fig = px.imshow(im_pil)
+    return fig
+
+
+@app.callback(Output("interactive-image4", "figure"), Input("demo-dropdown2", "value"))
+def update_graph4(value):
+    time.sleep(1)
+    im_pil = Image.open("./downloaded_images/box_similar_" + value + ".png")
     fig = px.imshow(im_pil)
     return fig
 

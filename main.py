@@ -54,12 +54,23 @@ def graph_data(variable: hug.types.text, mode: hug.types.number, hug_timer=3):
     n, bins, patches = plt.hist(
         data[variable], 50, density=False, facecolor="g", alpha=0.75
     )
-    plt.axvline(candidate[variable][0], color="k", linestyle="dashed", linewidth=1)
-    # plt.axvline(
-    #    model.X_train[variable].mean(), color="k", linestyle="dashed", linewidth=1
-    # )
+    plt.axvline(
+        candidate[variable][0],
+        color="b",
+        linestyle="dashed",
+        linewidth=1,
+        label="Candidate",
+    )
+    plt.axvline(
+        data[variable].mean(),
+        color="k",
+        linestyle="dashed",
+        linewidth=1,
+        label="Variable mean",
+    )
     plt.xlabel(variable)
     plt.ylabel("Value")
+    plt.legend()
     plt.title("Histogram of " + variable)
     plt.grid(True)
     if mode == 1:
@@ -69,3 +80,30 @@ def graph_data(variable: hug.types.text, mode: hug.types.number, hug_timer=3):
     plt.savefig("./images/" + variable + ".png")
     plt.clf()
     return "./images/" + variable + ".png"
+
+
+@hug.get("/get_data2", output=hug.output_format.image("png"))
+@hug.local()
+def graph_box(variable: hug.types.text, mode: hug.types.number, hug_timer=3):
+    """Export graph candidate application data"""
+    if mode != 1:
+        labels = model.neighbours.labels_
+        candidate_cluster = model.predict_cluster(candidate)
+        similar = model.X_train[labels == candidate_cluster]
+        data = pd.DataFrame(similar, columns=X.columns)
+    else:
+        data = X
+
+    plt.boxplot(data[variable])
+    plt.scatter(1, candidate[variable])
+    plt.annotate("Candidate", (1, candidate[variable]))
+    plt.xticks(ticks=[1], labels=[variable])
+    plt.title("Boxplot of " + variable)
+
+    if mode == 1:
+        variable = "global_" + variable
+    else:
+        variable = "similar_" + variable
+    plt.savefig("./images/box_" + variable + ".png")
+    plt.clf()
+    return "./images/box_" + variable + ".png"

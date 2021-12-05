@@ -144,6 +144,23 @@ plotLayout1 = html.Div(
                 )
             },
         ),
+        dcc.Graph(
+            id="interactive-image3",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
     ]
 )
 plotLayout2 = html.Div(
@@ -151,6 +168,23 @@ plotLayout2 = html.Div(
         html.H4("\nVariable distribution"),
         dcc.Graph(
             id="interactive-image2",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
+        dcc.Graph(
+            id="interactive-image4",
             style={"width": "90vh", "height": "60vh"},
             figure={
                 "layout": go.Layout(
