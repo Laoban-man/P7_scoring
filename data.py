@@ -1,13 +1,30 @@
+# Improtant note: This data file would ordinarily be used to connect with a proper database server
+# more likely PostgreSQL, but thats me. I do plan on rewritting this in the future for such implementations.
+# With that said, this file will be be very slow to run and only to demonstrate data processing using
+# functions and pandas along with providing a central file for data references
+#
+# Import Pandas
 import pandas as pd
 
-file_path_base = "../data/home-credit-default-risk"
+
+# Import CSV data
+# Import team historical statistics
+# Some historical team names are correlated with their more modern counter part
+# Custome CSV files where created from the original by combining data to allow
+# for easier display of historical team data
 teams = pd.read_csv("data/update_team.csv")
+# Import Players batting data
 batters = pd.read_csv("data/update_batting.csv.gz")
+# Import custom Fielding data
 fielding = pd.read_csv("data/update_fielding.csv.gz")
+# Import custom pitching data
 pitching = pd.read_csv("data/update_pitching.csv")
+# Import Player profile data
 players = pd.read_csv("data/update_player.csv")
+# Import custom player and team id dataframe
 team_players = pd.read_csv("data/player_team.csv")
 
+# Hardcoded list of era names as key value pairs
 era_list = [
     {"label": "Dead Ball ('03-'19)", "value": "Dead Ball"},
     {"label": "Live Ball ('20-'41)", "value": "Live Ball"},

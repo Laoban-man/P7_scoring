@@ -18,8 +18,10 @@ from layouts import (
     plotLayout1,
     variableLayout2,
     plotLayout2,
+    plotLayout3,
     scoringLayout,
     predictbuttonLayout,
+    interpretbuttonLayout,
 )
 import callbacks
 from app import app
@@ -92,6 +94,8 @@ def display_page(pathname):
             ],
             className="home",
         )
+    elif pathname.endswith("/"):
+        return listLayout, sendLayout
     elif pathname.endswith("/application"):
         return listLayout, sendLayout
     elif pathname.endswith("/exploration"):
@@ -104,7 +108,13 @@ def display_page(pathname):
             plotLayout2,
         )
     elif pathname.endswith("/predict"):
-        return predictLayout, predictbuttonLayout, scoringLayout
+        return (
+            predictLayout,
+            predictbuttonLayout,
+            scoringLayout,
+            interpretbuttonLayout,
+            plotLayout3,
+        )
     else:
         return "ERROR 404: Page not found!"
 
@@ -166,7 +176,7 @@ def send_file(btn1):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "btn-nclicks-1" in changed_id:
         try:
-            input_data = pd.read_csv("./uploaded_data/candidate.csv")
+            input_data = pd.read_csv("./uploaded_data/candidate1.csv")
             input_data = {
                 "columns": ",".join([a for a in input_data.columns]),
                 "values": ",".join([str(a) for a in input_data.iloc[0, :]]),
@@ -203,7 +213,7 @@ def update_output1(value):
             f.close()
 
     try:
-        input_data = {"variable": value, "mode": 2}
+        input_data = {"variable": value, "mode": 1}
         # input_data = json.dumps(input_data)
         response = requests.get("http://localhost:8000/get_data2", input_data)
         file = open("./downloaded_images/box_global_" + value + ".png", "wb")
@@ -275,7 +285,7 @@ def update_graph2(value):
     return fig
 
 
-@app.callback(Output("interactive-image3", "figure"), Input("demo-dropdown2", "value"))
+@app.callback(Output("interactive-image3", "figure"), Input("demo-dropdown1", "value"))
 def update_graph3(value):
     time.sleep(1)
     im_pil = Image.open("./downloaded_images/box_global_" + value + ".png")
@@ -292,6 +302,33 @@ def update_graph4(value):
 
 
 @app.callback(
+    Output("interactive-image6", "figure"),
+    Input("btn-nclicks-4", "n_clicks"),
+)
+def interpretability_local(value):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "btn-nclicks-4.n_clicks" in changed_id:
+        time.sleep(1)
+        im_pil = Image.open("./downloaded_images/local.png")
+        fig = px.imshow(im_pil)
+    return fig
+
+
+@app.callback(
+    Output("interactive-image7", "figure"),
+    Input("btn-nclicks-4", "n_clicks"),
+)
+def interpretability_global(value):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "btn-nclicks-4.n_clicks" in changed_id:
+        print(changed_id)
+        time.sleep(1)
+        im_pil = Image.open("./downloaded_images/global.png")
+        fig = px.imshow(im_pil)
+    return fig
+
+
+@app.callback(
     Output("potential", "figure"),
     # Output("container-button-predict", "children"),
     Input("btn-nclicks-3", "n_clicks"),
@@ -299,14 +336,26 @@ def update_graph4(value):
 def predict_score(value):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "btn-nclicks-3" in changed_id:
-        print("step 1")
         try:
+            response = requests.get("http://localhost:8000/get_local")
+            file = open("./downloaded_images/local.png", "wb")
+            file.write(response.content)
+            file.close()
+        except:
+            print("Error with local image")
+        try:
+            response = requests.get("http://localhost:8000/get_global")
+            file = open("./downloaded_images/global.png", "wb")
+            file.write(response.content)
+            file.close()
+        except:
+            print("Error with global image.")
 
+        try:
             response = requests.get("http://localhost:8000/prediction")
             with open("log.txt", "wb") as f:
                 f.write(response.content)
                 f.close()
-            print("step 2")
             print(response.content)
         except:
             with open("log.txt", "wb") as f:
@@ -315,18 +364,16 @@ def predict_score(value):
         # gauge plot 1
         prediction = json.loads(response.content)["prediction"][0]
         print(prediction)
-        if prediction < 2.5:
-            color = "#bf1600"
-        elif prediction >= 2.5 and prediction < 7.5:
-            color = "#db8a0f"
-        else:
+        if prediction == 0:
             color = "#5cbf00"
+        elif prediction == 1:
+            color = "#bf1600"
         gauge1 = go.Figure(
             go.Indicator(
                 domain={"x": [0, 1], "y": [0, 1]},
                 value=prediction,
                 mode="gauge+number",
-                gauge={"axis": {"range": [None, 10]}, "bar": {"color": color}},
+                gauge={"axis": {"range": [-1, 1]}, "bar": {"color": color}},
             )
         )
         gauge1.update_layout(
@@ -347,7 +394,7 @@ def predict_score(value):
                 domain={"x": [0, 1], "y": [0, 1]},
                 value=0,
                 mode="gauge+number",
-                gauge={"axis": {"range": [None, 10]}, "bar": {"color": "#5000bf"}},
+                gauge={"axis": {"range": [-1, 1]}, "bar": {"color": "#5000bf"}},
             )
         )
         gauge1.update_layout(

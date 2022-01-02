@@ -94,12 +94,12 @@ variableLayout1 = html.Div(
         dcc.Dropdown(
             id="demo-dropdown1",
             options=[
-                {"label": "sepal length (cm)", "value": "sepal length (cm)"},
-                {"label": "sepal width (cm)", "value": "sepal width (cm)"},
-                {"label": "petal length (cm)", "value": "petal length (cm)"},
-                {"label": "petal width (cm)", "value": "petal width (cm)"},
+                {"label": "APP_CODE_GENDER", "value": "APP_CODE_GENDER"},
+                {"label": "APP_DAYS_BIRTH", "value": "APP_DAYS_BIRTH"},
+                {"label": "APP_DAYS_EMPLOYED", "value": "APP_DAYS_EMPLOYED"},
+                {"label": "APP_DAYS_ID_PUBLISH", "value": "APP_DAYS_ID_PUBLISH"},
             ],
-            value="sepal length (cm)",
+            value="APP_CODE_GENDER",
         ),
         html.Div(id="dd-output-container1"),
         # html.Button("Plot", id="btn-nclicks-2", n_clicks=0),
@@ -111,12 +111,12 @@ variableLayout2 = html.Div(
         dcc.Dropdown(
             id="demo-dropdown2",
             options=[
-                {"label": "sepal length (cm)", "value": "sepal length (cm)"},
-                {"label": "sepal width (cm)", "value": "sepal width (cm)"},
-                {"label": "petal length (cm)", "value": "petal length (cm)"},
-                {"label": "petal width (cm)", "value": "petal width (cm)"},
+                {"label": "APP_CODE_GENDER", "value": "APP_CODE_GENDER"},
+                {"label": "APP_DAYS_BIRTH", "value": "APP_DAYS_BIRTH"},
+                {"label": "APP_DAYS_EMPLOYED", "value": "APP_DAYS_EMPLOYED"},
+                {"label": "APP_DAYS_ID_PUBLISH", "value": "APP_DAYS_ID_PUBLISH"},
             ],
-            value="sepal length (cm)",
+            value="APP_CODE_GENDER",
         ),
         html.Div(id="dd-output-container2"),
         # html.Button("Plot", id="btn-nclicks-2", n_clicks=0),
@@ -203,6 +203,46 @@ plotLayout2 = html.Div(
     ]
 )
 
+plotLayout3 = html.Div(
+    [
+        html.H4("\nLocal interpretation"),
+        dcc.Graph(
+            id="interactive-image6",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
+        html.H4("\nGlobal interpretation"),
+        dcc.Graph(
+            id="interactive-image7",
+            style={"width": "90vh", "height": "60vh"},
+            figure={
+                "layout": go.Layout(
+                    # width = 800,
+                    height=300,
+                    xaxis={
+                        "zeroline": False,
+                        "showgrid": False,
+                        "visible": False,
+                        "color": "#FFFFFF",
+                    },
+                    yaxis={"showgrid": False, "zeroline": False, "visible": False},
+                )
+            },
+        ),
+    ]
+)
 
 listLayout = html.Div(
     [
@@ -240,6 +280,13 @@ sendLayout = html.Div(
 predictbuttonLayout = html.Div(
     [
         html.Button("Evaluate", id="btn-nclicks-3", n_clicks=0),
+        html.Div(id="container-button-predict"),
+    ]
+)
+
+interpretbuttonLayout = html.Div(
+    [
+        html.Button("Interpret", id="btn-nclicks-4", n_clicks=0),
         html.Div(id="container-button-predict"),
     ]
 )
@@ -369,8 +416,6 @@ scoringLayout = html.Div(
     dcc.Graph(id="potential"),
 )
 
-
-# Feilding Statistics
 predictLayout = html.Div(
     [
         dbc.Row(
