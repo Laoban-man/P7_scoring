@@ -12,6 +12,9 @@ import lightgbm as lgb
 
 class Model:
     def __init__(self, X=[], y=[], params=[]):
+        """
+        Initialisation de l'objet
+        """
         self.X = X
         self.y = y
         self.imputer = []
@@ -19,6 +22,9 @@ class Model:
         self.model = []
 
     def split(self, test_size):
+        """
+        Séparation des données initiales en train et test
+        """
         X = np.array(self.X)
         y = np.array(self.y)
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
@@ -26,20 +32,32 @@ class Model:
         )
 
     def fit(self):
+        """
+        Entraînement du modèle sur les données train
+        """
         self.fitted_model = self.model.fit(self.X_train, self.y_train)
         pickle.dump(self.model, open("saved_model.pkl", "wb"))
 
     def fit_neighbours(self):
+        """
+        Identification des données similaires pour un dossier
+        """
         self.neighbours = KMeans()
         self.X_sample = self.X.sample(frac=0.1)
         self.fitted_neighbours = self.neighbours.fit(self.X_sample)
         pickle.dump(self.neighbours, open("saved_neigbours.pkl", "wb"))
 
     def predict_cluster(self, candidate):
+        """
+        Identification du cluster du candidat
+        """
         cluster = self.neighbours.predict(candidate)
         return cluster
 
     def predict(self, new_data=[], import_mod=True):
+        """
+        Prédiction d'un cluster
+        """
         if import_mod == True:
             self.import_model(model_file="model.pkl")
         if type(new_data) != type(None):
@@ -69,7 +87,9 @@ class Model:
         return self.result
 
     def interpretability(self):
-        """Interpretability"""
+        """
+        Interpretability
+        """
         # Local interpretability
         explainer = lime_tabular.LimeTabularExplainer(
             training_data=np.array(self.X_sample),
@@ -95,7 +115,9 @@ class Model:
         plt.clf()
 
     def import_model(self, model_file="model.pkl"):
-        """Import pre-defined model"""
+        """
+        Import pre-defined model
+        """
         model, imp, ss = pickle.load(open(model_file, "rb"))
         self.model = model
         self.imputer = imp
