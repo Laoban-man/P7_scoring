@@ -417,4 +417,4 @@ app.layout = index()
 if __name__ == "__main__":
     # set debug to false when deploying app
     app.run_server(debug=False)
-    app.run_server(debug=True)
+    # app.run_server(debug=True)
