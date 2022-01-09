@@ -14,7 +14,7 @@ Pillow==9.0.0
 plotly==4.14.3
 PyJWT==2.3.0
 requests==2.26.0
-scikit_learn==1.0.2
+scikit_learn==0.24.1
 shap==0.40.0
 urlquote==1.1.4
 gunicorn==20.1.0
