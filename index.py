@@ -129,7 +129,7 @@ def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
     data = content.encode("utf8").split(b";base64,")[1]
     # input_data = {"data": list(pd.read_csv("candidate.csv"))}
-    # requests.get("http://localhost:8000/post_data", params=input_data)
+    # requests.get("http://138.197.181.164:8000/post_data", params=input_data)
     with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
@@ -182,7 +182,7 @@ def send_file(btn1):
                 "values": ",".join([str(a) for a in input_data.iloc[0, :]]),
             }
             # input_data = json.dumps(input_data)
-            response = requests.get("http://localhost:8000/post_data", input_data)
+            response = requests.get("http://138.197.181.164:8000/post_data", input_data)
             with open("log.txt", "wb") as f:
                 f.write(response.content)
                 f.close()
@@ -199,7 +199,7 @@ def update_output1(value):
     try:
         input_data = {"variable": value, "mode": 1}
         # input_data = json.dumps(input_data)
-        response = requests.get("http://localhost:8000/get_data", input_data)
+        response = requests.get("http://138.197.181.164:8000/get_data", input_data)
         file = open("./downloaded_images/global_" + value + ".png", "wb")
         file.write(response.content)
         file.close()
@@ -215,7 +215,7 @@ def update_output1(value):
     try:
         input_data = {"variable": value, "mode": 1}
         # input_data = json.dumps(input_data)
-        response = requests.get("http://localhost:8000/get_data2", input_data)
+        response = requests.get("http://138.197.181.164:8000/get_data2", input_data)
         file = open("./downloaded_images/box_global_" + value + ".png", "wb")
         file.write(response.content)
         file.close()
@@ -238,7 +238,7 @@ def update_output2(value):
     try:
         input_data = {"variable": value, "mode": 2}
         # input_data = json.dumps(input_data)
-        response = requests.get("http://localhost:8000/get_data", input_data)
+        response = requests.get("http://138.197.181.164:8000/get_data", input_data)
         file = open("./downloaded_images/similar_" + value + ".png", "wb")
         file.write(response.content)
         file.close()
@@ -254,7 +254,7 @@ def update_output2(value):
     try:
         input_data = {"variable": value, "mode": 2}
         # input_data = json.dumps(input_data)
-        response = requests.get("http://localhost:8000/get_data2", input_data)
+        response = requests.get("http://138.197.181.164:8000/get_data2", input_data)
         file = open("./downloaded_images/box_similar_" + value + ".png", "wb")
         file.write(response.content)
         file.close()
@@ -337,14 +337,14 @@ def predict_score(value):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "btn-nclicks-3" in changed_id:
         try:
-            response = requests.get("http://localhost:8000/get_local")
+            response = requests.get("http://138.197.181.164:8000/get_local")
             file = open("./downloaded_images/local.png", "wb")
             file.write(response.content)
             file.close()
         except:
             print("Error with local image")
         try:
-            response = requests.get("http://localhost:8000/get_global")
+            response = requests.get("http://138.197.181.164:8000/get_global")
             file = open("./downloaded_images/global.png", "wb")
             file.write(response.content)
             file.close()
@@ -352,7 +352,7 @@ def predict_score(value):
             print("Error with global image.")
 
         try:
-            response = requests.get("http://localhost:8000/prediction")
+            response = requests.get("http://138.197.181.164:8000/prediction")
             with open("log.txt", "wb") as f:
                 f.write(response.content)
                 f.close()
@@ -416,4 +416,5 @@ app.layout = index()
 # Call app server
 if __name__ == "__main__":
     # set debug to false when deploying app
+    app.run_server(debug=False)
     app.run_server(debug=True)

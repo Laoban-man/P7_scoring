@@ -5,7 +5,7 @@ Then run the following from ipython
 and it's better to specify absolute path to it):
     import requests
     with open('/home/hysterio/code/open-classrooms/P7_scoring/test.txt', 'rb') as wgetrc_handle:
-        response = requests.post('http://localhost:8000/upload', files={'.wgetrc': wgetrc_handle})
+        response = requests.post('http://138.197.181.164:8000/upload', files={'.wgetrc': wgetrc_handle})
     print(response.headers)
     print(response.content)
 This should both print in the terminal and return back the filename and filesize of the uploaded file.
